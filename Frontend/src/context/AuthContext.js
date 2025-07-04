@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { authAPI } from '../api/auth.js';
+import axios from 'axios';
 
 const AuthContext = createContext();
 
@@ -140,12 +141,36 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'CLEAR_ERROR' });
   };
 
+  const setAuthFromToken = async (token) => {
+    if (!token) return;
+    try {
+      // Option 1: Decode JWT (if you want to extract user info directly)
+      // Option 2: Fetch user profile from backend
+      const res = await axios.get('/api/auth/profile', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.data && res.data.success) {
+        const user = res.data.data.user;
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', token);
+        dispatch({ type: 'AUTH_SUCCESS', payload: user });
+      } else {
+        dispatch({ type: 'AUTH_FAILURE', payload: 'Invalid token' });
+      }
+    } catch (error) {
+      dispatch({ type: 'AUTH_FAILURE', payload: 'Invalid token' });
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+    }
+  };
+
   const value = {
     ...state,
     login,
     register,
     logout,
     clearError,
+    setAuthFromToken,
   };
 
   return (

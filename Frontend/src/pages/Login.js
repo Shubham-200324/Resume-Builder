@@ -87,10 +87,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-8 px-2 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-md border border-gray-200 p-4 sm:p-8 space-y-8 mx-2">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-4 text-center text-2xl sm:text-3xl font-extrabold text-gray-900">
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
@@ -103,8 +103,35 @@ const Login = () => {
             </Link>
           </p>
         </div>
-        
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        {/* Google Login Button */}
+        <button
+          type="button"
+          className="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium shadow-sm hover:bg-gray-50 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary-500"
+          onClick={() => {
+            // Set your backend URL here if different in production
+            window.location.href = process.env.REACT_APP_BACKEND_URL
+              ? `${process.env.REACT_APP_BACKEND_URL}/api/auth/google`
+              : 'http://localhost:3001/api/auth/google';
+          }}
+        >
+          {/* Google SVG Icon */}
+          <svg className="h-5 w-5" viewBox="0 0 488 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g>
+              <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123.1 24.5 166.3 64.9l-67.5 64.9C316.4 97.7 285.7 88 248 88c-99.7 0-180.7 81.1-180.7 180.7 0 99.7 81.1 180.7 180.7 180.7 91.6 0 150.7-52.2 162.7-125.7H248v-100h240c2.2 12.7 3.3 25.7 3.3 38.8z" fill="#4285F4"/>
+              <path d="M248 504c67.6 0 124.5-22.4 166.3-60.7l-80.1-65.6c-22.2 15-50.7 23.9-86.2 23.9-66.2 0-122.3-44.7-142.4-104.7H24.1v65.8C66.2 455.1 151.2 504 248 504z" fill="#34A853"/>
+              <path d="M105.6 297.6c-4.8-14.3-7.6-29.5-7.6-45.6s2.8-31.3 7.6-45.6v-65.8H24.1C8.6 164.7 0 208.7 0 256s8.6 91.3 24.1 130.4l81.5-65.8z" fill="#FBBC05"/>
+              <path d="M248 88c35.7 0 67.7 12.3 92.9 36.4l69.6-69.6C371.1 24.5 314.8 0 248 0 110.8 0 0 110.8 0 248c0 47.3 8.6 91.3 24.1 130.4l81.5-65.8C125.7 169.1 206.7 88 248 88z" fill="#EA4335"/>
+            </g>
+          </svg>
+          Sign in with Google
+        </button>
+        {/* Divider */}
+        <div className="flex items-center my-2">
+          <div className="flex-grow h-px bg-gray-200" />
+          <span className="mx-2 text-gray-400 text-xs">or</span>
+          <div className="flex-grow h-px bg-gray-200" />
+        </div>
+        <form className="mt-6 space-y-6" onSubmit={handleSubmit} autoComplete="off">
           <div className="space-y-4">
             <Input
               label="Email Address"
@@ -116,8 +143,8 @@ const Login = () => {
               error={errors.email}
               placeholder="Enter your email"
               required
+              className="text-base"
             />
-            
             <div className="relative">
               <Input
                 label="Password"
@@ -129,11 +156,13 @@ const Login = () => {
                 error={errors.password}
                 placeholder="Enter your password"
                 required
+                className="pr-10 text-base"
               />
               <button
                 type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none"
                 onClick={() => setShowPassword(!showPassword)}
+                tabIndex={-1}
               >
                 {showPassword ? (
                   <EyeSlashIcon className="h-5 w-5 text-gray-400" />
@@ -143,10 +172,9 @@ const Login = () => {
               </button>
             </div>
           </div>
-
           <Button
             type="submit"
-            className="w-full"
+            className="w-full py-2 text-base"
             loading={isLoading}
             disabled={isLoading}
           >

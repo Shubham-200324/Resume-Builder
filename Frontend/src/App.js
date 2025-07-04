@@ -8,6 +8,7 @@ import Login from './pages/Login.js';
 import Signup from './pages/Signup.js';
 import Dashboard from './pages/Dashboard.js';
 import ResumeBuilder from './pages/ResumeBuilder.js';
+import OAuthSuccess from './pages/oauth-success.js';
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
               }
             />
             <Route path="/edit-resume/:id" element={<ResumeBuilder />} />
+            <Route path="/oauth-success" element={<OAuthSuccess />} />
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
